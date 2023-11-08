@@ -1,5 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { initMap } from "../utils/google-maps";
+import { db } from "../firebase";
+import { addDoc, collection } from "firebase/firestore";
 
 let map;
 
@@ -37,12 +39,19 @@ const Map = () => {
    * @param {google.maps.MapMouseEvent} event
    * @returns {google.maps.Marker}
    */
-  const addMarker = (event) => {
+  const addMarker = async (event) => {
     setMapState((curr) => ({
       ...curr,
       markers: [...curr.markers, createMarker(event, `Quest ${curr.labelNumber}`)],
       labelNumber: curr.labelNumber + 1,
     }));
+
+    await addDoc(collection(db, "map-markers"), {
+      Quest: {
+        Location: `${event.latLng.lat()}, ${event.latLng.lng()}`,
+        Timestamp: new Date()
+      }
+    });
   };
 
   useEffect(() => {
