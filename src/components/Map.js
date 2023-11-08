@@ -8,6 +8,7 @@ let map;
 /**
  * @returns {JSX.Element}
  */
+
 const Map = () => {
   /**
    * @type {[{ markers: google.maps.Marker[], labelNumber: number }, React.Dispatch<React.SetStateAction<{ markers: google.maps.Marker[], labelNumber: number }>>]}
