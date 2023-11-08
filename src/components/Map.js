@@ -1,6 +1,5 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { initMap } from "../utils/google-maps";
-import { useEffect } from "react";
 
 let map;
 
@@ -13,16 +12,25 @@ const Map = () => {
 
   /**
    * @param {google.maps.MapMouseEvent} event
+   * @param {string} label
+   * @returns {google.maps.Marker}
+   */
+  const createMarker = (event, label) => {
+    return new window.google.maps.Marker({
+      position: event.latLng,
+      label,
+      map,
+    })
+  };
+
+  /**
+   * @param {google.maps.MapMouseEvent} event
    * @returns {google.maps.Marker}
    */
   const addMarker = (event) => {
     setMapState((curr) => ({
       ...curr,
-      markers: [...curr.markers, new window.google.maps.Marker({
-        position: event.latLng,
-        label: `Quest ${curr.labelNumber}`,
-        map,
-      })],
+      markers: [...curr.markers, createMarker(event, `Quest ${curr.labelNumber}`)],
       labelNumber: curr.labelNumber + 1,
     }));
   };
